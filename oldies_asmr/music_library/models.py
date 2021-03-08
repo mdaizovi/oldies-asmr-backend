@@ -14,5 +14,10 @@ class Song(models.Model):
     recording_repository = models.CharField(max_length=255,null=True, blank=True)
     rights_advisory = models.CharField(max_length=255,null=True, blank=True)
 
+    description_url = models.URLField(null=True, blank=True)
     streaming_url = models.URLField(null=True, blank=True)
     audio_file = models.FileField(null=True, blank=True, upload_to="songs/")
+
+    citation_chicago = models.CharField(max_length=255,null=True, blank=True)
+    citation_apa = models.CharField(max_length=255, null=True, blank=True)
+    citation_mla = models.CharField(max_length=255, null=True, blank=True)

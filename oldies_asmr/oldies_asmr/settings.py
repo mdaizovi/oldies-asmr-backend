@@ -26,14 +26,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 ENV_DEV = 'dev'
 ENV_PROD = 'prod'
 
-ENV_TYPE = env('ENV_TYPE')
-if not ENV_TYPE in (ENV_DEV, ENV_PROD):
-    raise ImproperlyConfigured('Invalid value for ENV_TYPE.')
+ENV_TYPE = env('DJANGO_ENVIRONMENT')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if ENV_TYPE == ENV_DEV else False
@@ -42,7 +41,7 @@ DEBUG = True if ENV_TYPE == ENV_DEV else False
 
 SITE_ID=1
 
-if ENV_TYPE=="dev":
+if ENV_TYPE=="local":
     SITE_ADDRESS = "http://localhost:8000"
 elif ENV_TYPE=="prod":
     SITE_ID=1
