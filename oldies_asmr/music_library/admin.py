@@ -5,4 +5,4 @@ from .models import*
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
-    pass
+    search_fields=["audio_file", "title", "contributor_names"]

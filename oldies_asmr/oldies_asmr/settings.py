@@ -27,21 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('DJANGO_SECRET_KEY')
-
-ENV_DEV = 'dev'
-ENV_PROD = 'prod'
-
 ENV_TYPE = env('DJANGO_ENVIRONMENT')
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True if ENV_TYPE == ENV_DEV else False
+DEBUG = True if ENV_TYPE in ["local", "dev"] else False
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
 SITE_ID=1
 
-if ENV_TYPE=="local":
+if ENV_TYPE in ["local", "dev"]:
     SITE_ADDRESS = "http://localhost:8000"
 elif ENV_TYPE=="prod":
     SITE_ID=1
@@ -146,11 +140,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
-# STATICFILES_DIRS = [
-#      "static", "css", "js", "fonts", "images", "font-awesome", 'fontello',  "flag-icon-css-master",
-# ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# Reminder: edit the files in STATICFILES_DIRS. the ones in static are auto generated.
-STATICFILES_DIRS = ["staticfiles", os.path.join(BASE_DIR,)]
+# # Reminder: edit the files in STATICFILES_DIRS. the ones in static are auto generated.
+STATICFILES_DIRS = [os.path.join(BASE_DIR,"staticfiles")]
+
+from unipath import Path
+
+BASE_DIR         =  Path(__file__).ancestor(3)
+TEMPLATE_DIRS    = (
+    BASE_DIR.child('templates'),
+)
+
+
+STATIC_URL = '/static/'
+MEDIA_URL= '/media/'
