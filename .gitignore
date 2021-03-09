@@ -14,5 +14,5 @@ db.sqlite3
 .env.backup
 .session
 /venv
-
-
+/oldies_asmr/static
+/oldies_asmr/media

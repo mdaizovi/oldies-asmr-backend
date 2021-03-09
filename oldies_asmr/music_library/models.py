@@ -23,6 +23,10 @@ class Song(models.Model):
     citation_apa = models.CharField(max_length=255, null=True, blank=True)
     citation_mla = models.CharField(max_length=255, null=True, blank=True)
 
+    # possibility to skip if song is terrible, or racist, or whatever. I guess could just delete...
+    is_skipped = models.BooleanField(default=False)
+    notes = models.TextField(null=True, blank=True)
+
     def parse_streaming_filename(self):
         """
         returns something like ucsb_victor_73536_01_b26920_01
