@@ -4,7 +4,9 @@ from collections import OrderedDict
 from time import sleep, time
 from random import randint, choice
 import os
+import tempfile
 
+from django.core import files
 from django.forms.models import model_to_dict
 
 from .models import Song
@@ -14,9 +16,9 @@ class Scraper():
 
     def __init__(self, *args, **kwargs):
         # Just ragtime and jazz, 1,022 items: https://www.loc.gov/collections/national-jukebox/?fa=subject%3Aragtime%2C+jazz%2C+and+more
-        self.base_url = "https://www.loc.gov/collections/national-jukebox/?fa=subject%3Aragtime%2C+jazz%2C+and+more"
+        #self.base_url = "https://www.loc.gov/collections/national-jukebox/?fa=subject%3Aragtime%2C+jazz%2C+and+more"
         # Prior to 1923, 454 items: (soon to be public domain):
-        # https://www.loc.gov/collections/national-jukebox/?fa=subject%3Aragtime%2C+jazz%2C+and+more&end_date=1922-12-31&searchType=advanced&start_date=1900-01-01
+        self.base_url = "https://www.loc.gov/collections/national-jukebox/?fa=subject%3Aragtime%2C+jazz%2C+and+more&end_date=1922-12-31&searchType=advanced&start_date=1900-01-01"
         self.content = None
         # for other pages add &sp=2, done in increments of 25.
         # 19 pges for pub domain, 41 for other
@@ -93,7 +95,6 @@ class Scraper():
             citation = citation_type_div.find('p').text.strip()
             setattr(song, attr, citation)
 
-        about_div = soup.find(id='about-this-item')
         table = soup.find(id='item-cataloged-data')
         content_list = [tag.text for tag in table.find_all()]
         ct = []
@@ -119,8 +120,22 @@ class Scraper():
         print(model_to_dict(song))
         print("--------\n")
 
-
-
+    def download_mp3(self, song_qset):
+        with requests.Session() as req:
+            i = 0
+            for s in song_qset:
+                i+=1
+                print("\n\n{}.".format(i))
+                name = s.parse_jukebox_id()
+                file_name = name + ".mp3"
+                print("Downloading File {}".format(name))
+                download = req.get(s.streaming_url)
+                with open(file_name, 'wb') as f:
+                    f.write(download.content)
+                    s.audio_file.save(
+                        os.path.basename(file_name), files.File(open(file_name, "rb"))
+                    )
+                os.remove(file_name)
 
 
 
