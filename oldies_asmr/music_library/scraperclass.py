@@ -1,9 +1,14 @@
 import requests
 import bs4
+from collections import OrderedDict
 from time import sleep, time
 from random import randint, choice
 import os
+
+from django.forms.models import model_to_dict
+
 from .models import Song
+
 #===============================================================================
 class Scraper():
 
@@ -32,7 +37,6 @@ class Scraper():
         while not response and attempts < 5:
             try:
                 attempts += 1
-                print("req attempts: ",attempts)
                 response = requests.get(url,timeout=300)
                 if response:
                     print("got response via requests")
@@ -45,6 +49,9 @@ class Scraper():
                 sleep(sleep_int)
 
         return self.content
+
+    def title_to_snake(self, title):
+        return title.lower().replace(" ", "_")
 
     def parse_list_response(self):
         soup = bs4.BeautifulSoup(self.content, "html.parser")
@@ -63,5 +70,58 @@ class Scraper():
 
     def parse_item_response(self):
         soup = bs4.BeautifulSoup(self.content, "html.parser")
+        media_elem = soup.find('div', class_='audio-player-wrapper')
+        source_elem = media_elem.find(attrs={"src": True})
+        streaming_url = source_elem['src']
+
+        citation_div = soup.find(id='cite-this-content')
+        citation_chicago_div = citation_div.find('div', class_='chicago-citation')
+        citation_chicago = citation_chicago_div.find('p').text.strip()
+
+    def get_song_info(self, song):
+        print("\n--------")
+        self.content = self.req_url(url = song.description_url)
+        soup = bs4.BeautifulSoup(self.content, "html.parser")
+        media_elem = soup.find('div', class_='audio-player-wrapper')
+        source_elem = media_elem.find(attrs={"src": True})
+        streaming_url = source_elem['src']
+        song.streaming_url = streaming_url
+
+        citation_div = soup.find(id='cite-this-content')
+        for classname, attr in {"chicago-citation":"citation_chicago", "mla-citation":"citation_mla", "apa-citation":"citation_apa"}.items():
+            citation_type_div = citation_div.find('div', class_=classname)
+            citation = citation_type_div.find('p').text.strip()
+            setattr(song, attr, citation)
+
+        about_div = soup.find(id='about-this-item')
+        table = soup.find(id='item-cataloged-data')
+        content_list = [tag.text for tag in table.find_all()]
+        ct = []
+        for c in content_list:
+            text = c.replace('\n', '').strip()
+            ct.append(text)
+        dd_keys_raw = [tag.text for tag in table.find_all("dt")]
+        dd_keys = []
+        for d in dd_keys_raw:
+            text = d.replace('\n', '').strip()
+            dd_keys.append(text)
+        for i in ct:
+            if i in dd_keys:
+                current_title_index = dd_keys.index(i)
+                current_content_index = ct.index(i)
+                if current_title_index+1 != len(dd_keys):
+                    next_title = dd_keys[current_title_index+1]
+                    next_title_index = ct.index(next_title)
+                    item_list = ct[current_content_index+1:next_title_index]
+                    item = ", ".join(item_list)
+                    setattr(song, self.title_to_snake(i), item)
+        song.save()
+        print(model_to_dict(song))
+        print("--------\n")
+
+
+
+
+
 
 
