@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'', TemplateView.as_view(template_name="index.html"), name='index'),
 
     path('api-auth/', include('rest_framework.urls')),
-    path("api/music_library/", include("music_library.api.urls"))
+    path("api/music_library/", include("music_library.api.urls")),
 
     url(r'^app/privacy-policy/', TemplateView.as_view(template_name="privacy_policy_app.html"), name='privacy'),
     url(r'^app/support/', TemplateView.as_view(template_name="support.html"), name='support'),
