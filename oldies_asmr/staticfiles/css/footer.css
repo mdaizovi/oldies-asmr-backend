@@ -1,0 +1,22 @@
+.my-footer {
+  /*position: static;
+  bottom: 0px;*/
+  width: 100%;
+  bottom:0;
+  background: inherit;
+  color:inherit;
+  height:75px;
+}
+
+.footer {
+    color:white!important;
+    font-family: 'Josefin Sans',Arial,Tahoma,sans-serif;
+}
+.footer h2 {
+    color:white!important;
+    font-family: 'Josefin Sans',Arial,Tahoma,sans-serif;
+}
+.footer a {
+    color:white!important;
+    text-decoration:none;
+}

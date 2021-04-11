@@ -1,11 +1,59 @@
-<!DOCTYPE html>
-    <html>
-    <head>
-      <meta charset='utf-8'>
-      <meta name='viewport' content='width=device-width'>
-      <title>Oldies in Another Room and...</title>
-      <style> body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; padding:1em; } </style>
-    </head>
-    <body>>
-    </body>
-    </html>
+{% extends 'layouts/base.html'%}
+{% load static %}
+{% load i18n %}
+
+
+{% block content %}
+
+<main>
+
+  <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+          <video controls loop class="bd-placeholder-img" width="100%">
+            <source src="{% static 'video/RecordLoop.mp4' %}" type="video/mp4">
+          </video>
+    </div>
+  </div>
+
+
+  <!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- Wrap the rest of the page in another container to center all the content. -->
+
+  <div class="container marketing">
+
+    <!-- START THE FEATURETTES -->
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">Classic Americana Oldies Music:
+            <span class="text-muted">streaming from the Library of Congress</span></h2>
+        <p class="lead">more than 8 hours worth of classic jazz.</p>
+      </div>
+      <div class="col-md-5">
+        <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src = "{% static 'images/icon-trans.png' %}">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">Ambient Background Noise:<span class="text-muted"> 25 sounds</span></h2>
+        <p class="lead">Mood-setting background sounds can be layered for a richer feeling of being there </p>
+      </div>
+      <div class="col-md-5 order-md-1">
+          <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src = "{% static 'images/screen_shot500x500.png' %}">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <!-- /END THE FEATURETTES -->
+
+  </div><!-- /.container -->
+
+{% endblock %}
