@@ -17,11 +17,18 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-     path('api-auth/', include('rest_framework.urls')),
+
+    url(r'', TemplateView.as_view(template_name="index.html"), name='index'),
+
+    path('api-auth/', include('rest_framework.urls')),
     path("api/music_library/", include("music_library.api.urls"))
+
+    url(r'^app/privacy-policy/', TemplateView.as_view(template_name="privacy_policy_app.html"), name='privacy'),
+    url(r'^app/support/', TemplateView.as_view(template_name="support.html"), name='support'),
 ]
 
 if settings.DEBUG==True:
