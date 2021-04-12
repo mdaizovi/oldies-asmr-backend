@@ -3,6 +3,10 @@
 {% load i18n %}
 
 
+{% block meta %}
+{% include 'layouts/meta.html' %}
+{% endblock %}
+
 {% block content %}
 
 <main>
@@ -10,9 +14,10 @@
   <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
       <div class="carousel-item active">
-          <video controls loop class="bd-placeholder-img" width="100%">
+        <img class="bd-placeholder-img" src = "{% static 'images/RecordLoop.gif' %}">
+          <!-- <video controls loop class="bd-placeholder-img" width="100%">
             <source src="{% static 'video/RecordLoop.mp4' %}" type="video/mp4">
-          </video>
+          </video> -->
     </div>
   </div>
 
@@ -27,7 +32,7 @@
         <div class="col">
           <a href = "https://apps.apple.com/de/app/oldies-in-another-room-and/id1562562841" target = "_blank">
             <center>
-            <img width="400" src = "{% static 'images/app_store.png' %}">
+            <img width="300" src = "{% static 'images/app_store.png' %}">
             </center>
           </a>
         </div>
@@ -35,7 +40,7 @@
         <div class="col">
           <a href = "https://play.google.com/store/apps/details?id=com.mdaizovi.OldiesInAnotherRoomAnd" target = "_blank">
             <center>
-            <img width="400" src = "{% static 'images/google_play.png' %}">
+            <img width="300" src = "{% static 'images/google_play.png' %}">
             <center>
           </a>
         </div>
@@ -46,9 +51,9 @@
 
     <div class="row featurette">
       <div class="col-md-7">
-        <h2 class="featurette-heading">Classic Americana Oldies Music:
-            <span class="text-muted">streaming from the Library of Congress</span></h2>
-        <p class="lead">more than 8 hours worth of classic jazz.</p>
+        <h2 class="featurette-heading">Classic Americana Music:
+            <span class="text-muted">streaming hundreds of 1920's era recordings</span></h2>
+        <p class="lead">more than 30 hours worth of classic jazz.</p>
       </div>
       <div class="col-md-5">
         <img class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" src = "{% static 'images/icon-trans.png' %}">
