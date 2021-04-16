@@ -3,6 +3,7 @@ import re
 
 
 class Song(models.Model):
+    # Reminder: Jan 1 2022 anything before 192? becomes public domain
     title = models.CharField(max_length=255)
     other_title = models.CharField(max_length=255,null=True, blank=True)
     contributor_names = models.TextField(null=True, blank=True)
@@ -25,6 +26,10 @@ class Song(models.Model):
     # possibility to skip if song is terrible, or racist, or whatever. I guess could just delete...
     is_skipped = models.BooleanField(default=False)
     notes = models.TextField(null=True, blank=True)
+
+    is_unique = models.BooleanField(default=True, help_text="True is no others have same title")
+    public_domain = models.BooleanField(default=True, help_text="T if recorded prior to 1923")
+    seconds = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return "<{}> {} ({})".format(self.__class__.__name__, self.title, self.recording_date)
