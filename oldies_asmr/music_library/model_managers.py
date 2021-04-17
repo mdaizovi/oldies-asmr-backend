@@ -18,6 +18,7 @@ class SongManager(Manager):
         Default is 9.5 hours
         sound_dict has k,v of sound file path, and desired volume.
         """
+        sound_base_dir = '/Users/micheladaizovi/dev/reactnative/OldiesASMR/app/assets/audio/sounds/'
         qset = self.filter(public_domain=True, is_skipped=False, audio_file__isnull=False, seconds__isnull=False).order_by("?")
         seconds_total = minutes*60
         seconds_cumulative = 0
@@ -32,14 +33,29 @@ class SongManager(Manager):
         base_playlist = AudioSegment.empty()
         for songfile in track_list:
              base_playlist +=  AudioSegment.from_file(songfile)
+        playlist_duration_in_milliseconds = len(base_playlist)
 
-
-        track = base_playlist
+        sound_list = []
+        for sound_name, volume in sound_dict.items():
+            sound_path = sound_base_dir + sound_name + ".mp3"
+            sound_base = AudioSegment.from_file(sound_path)
+            sound = sound_base + volume # volume may be 0 if no change is desired.
+            sound_list.append(sound)
         
+        # Overlay all the sounds togeter so they can fade in together
+        base_sound = AudioSegment.silent(duration=playlist_duration_in_milliseconds)
+        sound_track = base_sound
+        for s in sound_list:
+            # sound_track = sound_track.overlay(s, loop=True, gain_during_overlay=-10)
+            sound_track = sound_track.overlay(s, loop=True)
+        sound_track = sound_track.fade_in(duration=20000)
+        
+        # Now combine all sounds with song.
+        base_track = base_playlist.overlay(sound_track)
 
-        track.fade_out(duration=5000))
+        track = base_track.fade_out(duration=10000)
         track_name = "{}.mp3".format(randomString())
         export_location = os.path.join(settings.MEDIA_ROOT, "tracks", track_name)
-        base_playlist.export(export_location, format="mp3")
+        track.export(export_location, format="mp3")
         print("done exporting {}".format(track_name))
 
