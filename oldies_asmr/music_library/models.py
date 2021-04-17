@@ -1,6 +1,7 @@
 from django.db import models
 import re
 
+from .model_managers import SongManager
 
 class Song(models.Model):
     # Reminder: Jan 1 2022 anything before 192? becomes public domain
@@ -30,6 +31,8 @@ class Song(models.Model):
     is_unique = models.BooleanField(default=True, help_text="True is no others have same title")
     public_domain = models.BooleanField(default=True, help_text="T if recorded prior to 1923")
     seconds = models.IntegerField(null=True, blank=True)
+
+    objects = SongManager()
 
     def __str__(self):
         return "<{}> {} ({})".format(self.__class__.__name__, self.title, self.recording_date)
