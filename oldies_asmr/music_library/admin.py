@@ -7,6 +7,6 @@ from .models import*
 class SongAdmin(admin.ModelAdmin):
     search_fields = ["audio_file", "title", "contributor_names"]
 
-@admin.register(Song)
+@admin.register(SongSkip)
 class SongSkipAdmin(admin.ModelAdmin):
     search_fields = ["song_title"]
