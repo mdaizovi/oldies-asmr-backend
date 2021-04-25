@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 import re
 
 from .model_managers import SongManager
@@ -55,3 +57,11 @@ class Song(models.Model):
         """
         if self.description_url:
             return self.description_url.split("/")[-2]
+
+class SongSkip(models.Model):
+    help_text = "Event this song was skipped, possibly indicating user dislikes it"
+    song = models.ForeignKey(Song, on_delete=models.CASCADE)
+    skipped_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "<{}> {} ({})".format(self.__class__.__name__, self.song, self.skipped_at.strftime("%Y-%m-%d %H:%M"))
