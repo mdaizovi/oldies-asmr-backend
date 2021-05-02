@@ -17,7 +17,6 @@ class SongPlayListAPIView(generics.ListAPIView):
     def get_queryset(self):
         return Song.objects.exclude(streaming_url=None, is_skipped=True)
 
-
     def get(self, request, format=None):
         songs = [s for s in self.get_queryset()]
         # Note that shuffle works in place, and returns None.
@@ -29,10 +28,3 @@ class SongSkipCreateAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SongSkipSerializer
     queryset = SongSkip.objects.all()
-
-    # def post(self, request):
-    #     serializer = self.get_serializer(data=request.data)
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

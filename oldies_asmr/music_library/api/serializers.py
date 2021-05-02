@@ -8,7 +8,7 @@ class SongSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Song
-        fields = ("title", "streaming_url", "citation_mla")
+        fields = ("id","title", "streaming_url", "citation_mla")
 
 
 class SongSkipSerializer(serializers.ModelSerializer):
